@@ -303,6 +303,8 @@ class LinkedList:
         text_to_return = text_to_return + "Available sector size on disk: "+ (100+self.l_size-self.compute_size()) +"\n"
         text_to_return = text_to_return + \
             "Available size orignally: "+(self.l_size-(total_size)) +"\n"
+        
+        return text_to_return
 
     def get_data(self, text):
         for line in text.splitlines():
@@ -520,6 +522,7 @@ class fileHandling:
             return "File has been Truncated " + "by User-"+current_thread().name+"\n"
 
     def show_memory_map(self):
+        mem_dat = ""
         try:
             mem_dat = self.llist.memory_map()
             return mem_dat
