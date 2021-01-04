@@ -555,7 +555,12 @@ class threading_class:
             if data == "MHA_ARA":
                 break
             list_data = data.split("#")
-            self.execute_program(list_data)
+
+            data_to_send = self.execute_program(list_data)
+            self.dat_file_sync()
+
+            self.ctc.send(data_to_send.encode('utf-8'))
+            
         self.file_hand.system_exit()
 
 
@@ -571,7 +576,8 @@ class threading_class:
         for j in range(len(data_list)-1):
             pt.append(data_list[j+1])
 
-        self.call_func_dynamically(function_to_perform, pt)
+        return_data = self.call_func_dynamically(function_to_perform, pt)
+        return return_data
 
     def call_func_dynamically(self, name, list_ge):
         return_string = getattr(self.file_hand, name)(*list_ge)
