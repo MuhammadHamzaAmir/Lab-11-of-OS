@@ -15,8 +15,6 @@ import socket
 import sys
 
 sys.setrecursionlimit(2000)
-n = len(sys.argv)
-console_args = int(sys.argv[1])
 
 
 # Node Class
@@ -671,6 +669,9 @@ class socket_class:
         
         self.server.close()
 
+
+obj = socket_class()
+obj.start_srvice()
 
 '''
 dat_st = None
