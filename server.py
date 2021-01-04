@@ -324,25 +324,25 @@ class fileHandling:
         fname = args[0]
         self.file_name = fname+".txt"
         try:
-            self.file = open("output"+current_thread().name+".txt", "a+")
+            self.file = open("sample.dat", "a+")
             self.file.write("#"+fname)
             self.file.close()
         except:
             pass
-        print("File is Created "+"by Thread-"+current_thread().name+"\n")
+        return "File is Created "+"by User-"+current_thread().name+"\n"
 
     def Delete(self, *args):
         args = list(args)
         fname = args[0]
         self.file_name = ""
         try:
-            self.file = open("output"+current_thread().name+".txt", "w+")
+            self.file = open("sample.dat", "w+")
 
             self.llist.deleteNode(fname)
             text = self.llist.printList()
             self.file.write(text)
             self.file.close()
-            print("File is Deleted "+"by Thread-"+current_thread().name+"\n")
+            return "File is Deleted "+"by User-"+current_thread().name+"\n"
         except:
             pass
 
@@ -351,14 +351,14 @@ class fileHandling:
         fname = args[0]
         mode = args[1]
         self.file_name = fname
-        print("File is Opened "+"by Thread-"+current_thread().name+"\n")
+        return "File is Opened "+"by User-"+current_thread().name+"\n"
         # return f
 
     def Close(self, *args):
         args = list(args)
         fname = args[0]
         self.file_name = fname
-        print("File is Closed "+"by Thread-"+current_thread().name+"\n")
+        return "File is Closed "+"by User-"+current_thread().name+"\n"
 
     # write_at_first_time
     def write_to_file(self, *args):
@@ -367,22 +367,21 @@ class fileHandling:
             fname = args[0]
             text = args[1]
 
-            self.file = open("output"+current_thread().name+".txt", "w+")
+            self.file = open("sample.dat", "w+")
             v = self.file
             self.llist.write_to_file_insert_node(text, fname)
             text = self.llist.printList()
             v.write(text)
             self.file.close()
 
-            print("Text has been written " +
-                  "by Thread-"+current_thread().name+"\n")
+            return "Text has been written " + "by User-"+current_thread().name+"\n"
         except:
             pass
 
     def write_at_OVERWRITE(self, fname, write_at, text):
         try:
 
-            self.file = open("output"+current_thread().name+".txt", "w+")
+            self.file = open("sample.dat", "w+")
             v = self.file
             s = text
             p = write_at
@@ -391,15 +390,14 @@ class fileHandling:
             v.write(t)
             self.file.close()
 
-            print("Text has been written " +
-                  "by Thread-"+current_thread().name+"\n")
+            return "Text has been written " + "by User-"+current_thread().name+"\n"
         except:
             pass
 
     def write_at_noOVERWRITE(self, fname, write_at, text):
         try:
 
-            self.file = open("output"+current_thread().name+".txt", "w+")
+            self.file = open("sample.dat", "w+")
             v = self.file
             s = text
             p = write_at
@@ -408,11 +406,11 @@ class fileHandling:
             v.write(t)
             self.file.close()
 
-            print("Text has been written " +
-                  "by Thread-"+current_thread().name+"\n")
+            return "Text has been written " + "by User-"+current_thread().name+"\n"
         except:
             pass
 
+#write to file function needs attention
     def Write_to_File_over(self, *args):
         args = list(args)
         fname = args[0]
@@ -429,7 +427,7 @@ class fileHandling:
         args = list(args)
         fname = args[0]
         t = self.llist.read_file(fname)
-        print(t)
+        return t
 
     #Write in End
 
@@ -439,7 +437,7 @@ class fileHandling:
             fname = args[0]
             text = args[1]
 
-            self.file = open("output"+current_thread().name+".txt", "w+")
+            self.file = open("sample.dat", "w+")
             v = self.file
             s = text
             self.llist.add_data(s, fname)
@@ -447,8 +445,7 @@ class fileHandling:
             v.write(t)
             self.file.close()
 
-            print("Text Has been Appended " +
-                  "by Thread-"+current_thread().name+"\n")
+            return "Text Has been Appended " + "by User-"+current_thread().name+"\n")
         except:
             pass
 
@@ -460,7 +457,7 @@ class fileHandling:
             size = args[2]
             target = args[3]
 
-            self.file = open("output"+current_thread().name+".txt", "w+")
+            self.file = open("sample.dat", "w+")
             v = self.file
             p = start
             s = target
@@ -470,7 +467,7 @@ class fileHandling:
             v.write(t)
             self.file.close()
 
-            print("Text Has been Moved "+"by Thread-"+current_thread().name+"\n")
+            return "Text Has been Moved "+"by User-"+current_thread().name+"\n"
         except:
             pass
 
@@ -481,20 +478,20 @@ class fileHandling:
             start = args[1]
             size = args[2]
 
-            self.file = open("output"+current_thread().name+".txt", "w+")
+            self.file = open("sample.dat", "w+")
             v = self.file.name
             p = start
             size = size
             try:
                 text = self.llist.read_file_atpoint(
                     fname, int(p), int(size))
-                print(text)
+                return text
                 self.file.close()
 
             except:
                 self.file.close()
 
-                print("")
+                return "" 
         except:
             pass
 
@@ -506,25 +503,23 @@ class fileHandling:
         maxSize = args[1]
         try:
 
-            self.file = open("output"+current_thread().name+".txt", "w+")
+            self.file = open("sample.dat", "w+")
             self.llist.turncate(int(maxSize),  fname)
             v = self.file
             t = self.llist.printList()
             self.file.write(t)
             self.file.close()
 
-            print("File has been Truncated " +
-                  "by Thread-"+current_thread().name+"\n")
+            return "File has been Truncated " + "by User-"+current_thread().name+"\n")
         except:
-            self.file = open("output"+current_thread().name+".txt", "w+")
+            self.file = open("sample.dat", "w+")
             self.llist.turncate(int(maxSize),  fname)
             t = self.llist.printList()
             v = self.file
             self.file.write(t)
             self.file.close()
 
-            print("File has been Truncated " +
-                  "by Thread-"+current_thread().name+"\n")
+            return "File has been Truncated " + "by User-"+current_thread().name+"\n")
 
     def show_memory_map(self):
         try:
