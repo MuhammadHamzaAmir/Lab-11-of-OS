@@ -445,7 +445,7 @@ class fileHandling:
             v.write(t)
             self.file.close()
 
-            return "Text Has been Appended " + "by User-"+current_thread().name+"\n")
+            return "Text Has been Appended " + "by User-"+current_thread().name+"\n"
         except:
             pass
 
@@ -510,7 +510,7 @@ class fileHandling:
             self.file.write(t)
             self.file.close()
 
-            return "File has been Truncated " + "by User-"+current_thread().name+"\n")
+            return "File has been Truncated " + "by User-"+current_thread().name+"\n"
         except:
             self.file = open("sample.dat", "w+")
             self.llist.turncate(int(maxSize),  fname)
@@ -519,7 +519,7 @@ class fileHandling:
             self.file.write(t)
             self.file.close()
 
-            return "File has been Truncated " + "by User-"+current_thread().name+"\n")
+            return "File has been Truncated " + "by User-"+current_thread().name+"\n"
 
     def show_memory_map(self):
         try:
