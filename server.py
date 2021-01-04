@@ -537,7 +537,7 @@ class threading_class:
         self.threading_list = []
         self.jt = 0
         self.ctc = connection_to_client
-        self.t = threading.Thread(target=self.read_input_file, args=[
+        self.t = threading.Thread(target=self.read_input, args=[
                                   str(thread_name_obj)], daemon=True)
         self.t.name = str(thread_name_obj)
 
@@ -547,18 +547,17 @@ class threading_class:
     def thread_join(self):
         self.t.join()
 
-    def read_input_file(self, thread_name):
-        file = open("input"+thread_name+".txt")
-        lines_list = []
-        for line in file:
-            lines_list.append(line.strip())
-        file.close()
-
-        for i in range(len(lines_list)):
-            data_line = lines_list[i]
-            list_data = data_line.split("#")
+    def read_input(self, thread_name):
+        
+        data = ""
+        while data:
+            data = self.ctc.recv(204800).decode('utf-8')
+            if data == "MHA_ARA":
+                break
+            list_data = data.split("#")
             self.execute_program(list_data)
         self.file_hand.system_exit()
+
 
     def execute_program(self, data_list):
         functions_of_file_handling_class = inspect.getmembers(
