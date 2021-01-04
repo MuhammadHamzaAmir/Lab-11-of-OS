@@ -286,25 +286,23 @@ class LinkedList:
 
     def memory_map(self):
         temp = self.head
+        text_to_return = ""
         total_size = 0
         exlist = []
         while (temp):
             total_size = total_size+len(temp.data)
-            print("File Name:", temp.id,
-                  " Size of node occupying:", len(temp.data))
+            text_to_return =  text_to_return + "File Name:"+temp.id+" Size of node occupying:"+ len(temp.data) +"\n"
             exlist.append(temp.id)
             temp = temp.next
         exlist = list(set(exlist))
-        print("Total Size occuppied: ", total_size)
-        print("Total Size alloted: ", (self.compute_size()-100))
-        print("Total Size: ", self.l_size)
-        print("Total Sectors: ", self.t_nodes)
-        print("Available Sectors: ", (self.t_nodes -
-                                      self.nodes))
-        print("Available sector size on disk: ",
-              (100+self.l_size-self.compute_size()))
-        print("Available size orignally: ",
-              (self.l_size-(total_size)))
+        text_to_return = text_to_return + "Total Size occuppied: "+ total_size +"\n"
+        text_to_return = text_to_return + "Total Size alloted: " + (self.compute_size()-100) +"\n"
+        text_to_return = text_to_return + "Total Size: " + self.l_size +"\n"
+        text_to_return = text_to_return + "Total Sectors: "+ self.t_nodes +"\n"
+        text_to_return = text_to_return + "Available Sectors: "+ (self.t_nodes -self.nodes) +"\n"
+        text_to_return = text_to_return + "Available sector size on disk: "+ (100+self.l_size-self.compute_size()) +"\n"
+        text_to_return = text_to_return + \
+            "Available size orignally: "+(self.l_size-(total_size)) +"\n"
 
     def get_data(self, text):
         for line in text.splitlines():
@@ -416,8 +414,8 @@ class fileHandling:
         fname = args[0]
         write_at = args[1]
         text = args[2]
-        print("Do you want to Overwrite? If Yes then write 1 ")
-        cond = input("Entre: ")
+        #print("Do you want to Overwrite? If Yes then write 1 ")
+        cond = args[3]
         if str(cond) == "1":
             self.write_at_OVERWRITE(fname, int(write_at), text)
         else:
@@ -523,7 +521,8 @@ class fileHandling:
 
     def show_memory_map(self):
         try:
-            self.llist.memory_map()
+            mem_dat = self.llist.memory_map()
+            return mem_dat
         except:
             pass
 
@@ -560,7 +559,7 @@ class threading_class:
             self.dat_file_sync()
 
             self.ctc.send(data_to_send.encode('utf-8'))
-            
+
         self.file_hand.system_exit()
 
 
