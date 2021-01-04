@@ -602,12 +602,11 @@ class threading_class:
             pass
 
         self.file_hand.llist.get_data(p)
-        for i in range(int(sys.argv[1])):
-            inp_file = open("output"+str(i)+".txt", "r+")
-            data = inp_file.read()
-            files_lists_data.append(data)
-            t_f_data = t_f_data + data
-            inp_file.close()
+        inp_file = open("sample.dat", "r+")
+        data = inp_file.read()
+        files_lists_data.append(data)
+        t_f_data = t_f_data + data
+        inp_file.close()
 
         for k in range(len(files_lists_data)):
             ex_list = []
