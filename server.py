@@ -532,11 +532,11 @@ class fileHandling:
 
 
 class threading_class:
-    def __init__(self, thread_name_obj):
+    def __init__(self, thread_name_obj,connection_to_client):
         self.file_hand = fileHandling()
         self.threading_list = []
         self.jt = 0
-
+        self.ctc = connection_to_client
         self.t = threading.Thread(target=self.read_input_file, args=[
                                   str(thread_name_obj)], daemon=True)
         self.t.name = str(thread_name_obj)
@@ -575,7 +575,8 @@ class threading_class:
         self.call_func_dynamically(function_to_perform, pt)
 
     def call_func_dynamically(self, name, list_ge):
-        getattr(self.file_hand, name)(*list_ge)
+        return_string = getattr(self.file_hand, name)(*list_ge)
+        return return_string
 
     def dat_file_sync(self):
         p = ""  # variable for dat file exclusive
@@ -617,7 +618,7 @@ class threading_class:
         ex_text = []
         for i in range(len(set_of_data)):
             ex_ = set_of_data[i].split("#")
-            ex_text.append(ex_[1])
+            ex_text.append(ex_[1])  
 
         seen = set()
         ex_set_file_name = [x for x in ex_text if not (
@@ -658,9 +659,11 @@ class socket_class:
             conn, addr = self.server.accept()
             self.server.timeout(60)
             user_name = conn.recv(204800).decode('utf-8')
-            obj = threading_class(user_name)
+            obj = threading_class(user_name,conn)
             self.t_l.append(obj)
             obj.thread_start()
+        
+        self.server.close()
 
 
 '''
