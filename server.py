@@ -395,7 +395,7 @@ class fileHandling:
 
             return "Text has been written " + "by User-"+current_thread().name+"\n"
         except:
-            pass
+            return " "
 
     def write_at_noOVERWRITE(self, fname, write_at, text):
         try:
@@ -411,7 +411,7 @@ class fileHandling:
 
             return "Text has been written " + "by User-"+current_thread().name+"\n"
         except:
-            pass
+            return " "
 
 #write to file function needs attention
     def Write_to_File_over(self, *args):
@@ -421,10 +421,11 @@ class fileHandling:
         text = args[2]
         #print("Do you want to Overwrite? If Yes then write 1 ")
         cond = args[3]
+        return_var = ""
         if str(cond) == "1":
-            self.write_at_OVERWRITE(fname, int(write_at), text)
+            return_var = self.write_at_OVERWRITE(fname, int(write_at), text)
         else:
-            self.write_at_noOVERWRITE(fname, int(write_at), text)
+            return_var = self.write_at_noOVERWRITE(fname, int(write_at), text)
 
     def Read_From_File(self, *args):
         args = list(args)
