@@ -67,7 +67,7 @@ def mainMenu():
             output = clientSocket.recv(204800).decode('utf-8')
             print(output)
         elif choice == "5":
-            send_data = "read_from_file#"+main_file
+            send_data = "Read_From_File#"+main_file
             clientSocket.send(send_data.encode('utf-8'))
             time.sleep(delay_t)
             output = clientSocket.recv(204800).decode('utf-8')
@@ -123,17 +123,15 @@ def mainMenu():
             send_data = "show_memory_map"
             clientSocket.send(send_data.encode('utf-8'))
             time.sleep(delay_t)
-            output = clientSocket.recv(204800).decode('utf-8')
+            output = clientSocket.recv(2048000).decode('utf-8')
             print(output)
         elif choice == "13":
             send_data = "MHA_ARA"
             clientSocket.send(send_data.encode('utf-8'))
             time.sleep(delay_t)
-            output = clientSocket.recv(204800).decode('utf-8')
-            print(output)
             break
         elif choice != "":
             print("\n Not Valid Choice Try again")
-
+    clientSocket.close()
 
 mainMenu()
