@@ -289,19 +289,19 @@ class LinkedList:
         exlist = []
         while (temp):
             total_size = total_size+len(temp.data)
-            text_to_return =  text_to_return + "File Name:"+temp.id+" Size of node occupying:"+ len(temp.data) +"\n"
+            text_to_return =  text_to_return + "File Name:"+temp.id+" Size of node occupying:"+ str(len(temp.data)) +"\n"
             exlist.append(temp.id)
             temp = temp.next
         exlist = list(set(exlist))
-        text_to_return = text_to_return + "Total Size occuppied: "+ total_size +"\n"
-        text_to_return = text_to_return + "Total Size alloted: " + (self.compute_size()-100) +"\n"
-        text_to_return = text_to_return + "Total Size: " + self.l_size +"\n"
-        text_to_return = text_to_return + "Total Sectors: "+ self.t_nodes +"\n"
-        text_to_return = text_to_return + "Available Sectors: "+ (self.t_nodes -self.nodes) +"\n"
-        text_to_return = text_to_return + "Available sector size on disk: "+ (100+self.l_size-self.compute_size()) +"\n"
+        text_to_return = text_to_return + "Total Size occuppied: "+ str(total_size) +"\n"
+        text_to_return = text_to_return + "Total Size alloted: " + str((self.compute_size()-100)) +"\n"
+        text_to_return = text_to_return + "Total Size: " + str(self.l_size) +"\n"
+        text_to_return = text_to_return + "Total Sectors: "+ str(self.t_nodes) +"\n"
+        text_to_return = text_to_return + "Available Sectors: "+ str((self.t_nodes -self.nodes)) +"\n"
+        text_to_return = text_to_return + "Available sector size on disk: "+ str((100+self.l_size-self.compute_size())) +"\n"
         text_to_return = text_to_return + \
-            "Available size orignally: "+(self.l_size-(total_size)) +"\n"
-        
+            "Available size orignally: "+str((self.l_size-(total_size))) +"\n"
+        print(text_to_return)
         return text_to_return
 
     def get_data(self, text):
@@ -315,7 +315,12 @@ class fileHandling:
 
     def __init__(self):
         self.file_name = ""
+        self.file = open("sample.dat","r")
         self.llist = LinkedList()
+        ex_d = self.file.read()
+        self.file.close()
+        self.llist.get_data(ex_d)
+
 
     def Create(self, *args):
         args = list(args)
@@ -483,13 +488,14 @@ class fileHandling:
             try:
                 text = self.llist.read_file_atpoint(
                     fname, int(p), int(size))
-                return text
+                
                 self.file.close()
+                return text
 
             except:
                 self.file.close()
 
-                return "" 
+                return " " 
         except:
             pass
 
@@ -520,15 +526,12 @@ class fileHandling:
             return "File has been Truncated " + "by User-"+current_thread().name+"\n"
 
     def show_memory_map(self):
-        mem_dat = ""
-        try:
-            mem_dat = self.llist.memory_map()
-            return mem_dat
-        except:
-            pass
+        mem_dat = self.llist.memory_map()
+        return mem_dat
 
     def system_exit(self):
-        self.file.close()
+        #self.file.close()
+        return " "
 
 
 class threading_class:
@@ -548,16 +551,21 @@ class threading_class:
         self.t.join()
 
     def read_input(self, thread_name):
-        
-        data = ""
+        print("hmmmm")
+        data = "some"
+        ex_test = "MHA_ARA"
+        ex_test = ex_test.encode('utf-8')
         while data:
-            data = self.ctc.recv(204800).decode('utf-8')
-            if data == "MHA_ARA":
+            print ("ok before")
+            data = self.ctc.recv(204800)
+            print ("after")
+            if data == ex_test:
                 break
+            data = data.decode('utf-8')
             list_data = data.split("#")
 
             data_to_send = self.execute_program(list_data)
-            self.dat_file_sync()
+            #self.dat_file_sync()
 
             self.ctc.send(data_to_send.encode('utf-8'))
 
@@ -571,7 +579,7 @@ class threading_class:
         for i in range(len(functions_of_file_handling_class)):
             if (functions_of_file_handling_class[i][0].lower() == data_list[0].lower()):
                 function_to_perform = functions_of_file_handling_class[i][0]
-
+        print(function_to_perform)
         pt = []
         for j in range(len(data_list)-1):
             pt.append(data_list[j+1])
@@ -654,18 +662,20 @@ class socket_class:
     def __init__(self):
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server.bind(('',95))
-        self.server.setblocking(1)
+        #self.server.setblocking(1)
         self.t_l = []
 
     def start_srvice(self):
         self.server.listen(10)
         while True:
+            print("sai")
             conn, addr = self.server.accept()
-            self.server.timeout(60)
             user_name = conn.recv(204800).decode('utf-8')
+            print("after recv")
             obj = threading_class(user_name,conn)
             self.t_l.append(obj)
             obj.thread_start()
+            print("after start")
         
         self.server.close()
 
