@@ -6,6 +6,7 @@ def mainMenu():
     serverIP = input("Enter the IP address: ")
     username = input("Enter the user name: ")
     clientSocket = socket(AF_INET, SOCK_STREAM)
+    #clientSocket.settimeout(120)
     clientSocket.connect((serverIP, 95))
     clientSocket.send(username.encode('utf-8'))
     main_file = ""
@@ -128,7 +129,8 @@ def mainMenu():
         elif choice == "13":
             send_data = "MHA_ARA"
             clientSocket.send(send_data.encode('utf-8'))
-            time.sleep(delay_t)
+            time.sleep(delay_t+1)
+            clientSocket.send(send_data.encode('utf-8'))
             break
         elif choice != "":
             print("\n Not Valid Choice Try again")
