@@ -301,7 +301,6 @@ class LinkedList:
         text_to_return = text_to_return + "Available sector size on disk: "+ str((100+self.l_size-self.compute_size())) +"\n"
         text_to_return = text_to_return + \
             "Available size orignally: "+str((self.l_size-(total_size))) +"\n"
-        print(text_to_return)
         return text_to_return
 
     def get_data(self, text):
@@ -310,16 +309,33 @@ class LinkedList:
             self.insert_node(a_l[0], a_l[1])
         self.indices_order()
 
+    def clear(self):
+        temp = self.head
+        while (temp):
+            temp = temp.next
+            self.head = None
+            temp = self.head
+            #self.head = self.head.next
+            #temp = None
+        self.nodes = 0
+        
+
 
 class fileHandling:
 
     def __init__(self):
         self.file_name = ""
-        self.file = open("sample.dat","r")
+        self.file = None
         self.llist = LinkedList()
-        ex_d = self.file.read()
-        self.file.close()
-        self.llist.get_data(ex_d)
+        try:
+            self.file = open("sample.dat", "r")
+            ex_d = self.file.read()
+            self.file.close()
+            self.llist.get_data(ex_d)
+        except:
+            self.file = open("sample.dat", "w+")
+            self.file.close()
+            pass
 
 
     def Create(self, *args):
@@ -335,6 +351,7 @@ class fileHandling:
         return "File is Created "+"by User-"+current_thread().name+"\n"
 
     def Delete(self, *args):
+        
         args = list(args)
         fname = args[0]
         self.file_name = ""
@@ -347,7 +364,8 @@ class fileHandling:
             self.file.close()
             return "File is Deleted "+"by User-"+current_thread().name+"\n"
         except:
-            pass
+            return " "
+        self.test_func()
 
     def Open(self, *args):
         args = list(args)
@@ -365,6 +383,7 @@ class fileHandling:
 
     # write_at_first_time
     def write_to_file(self, *args):
+        
         try:
             args = list(args)
             fname = args[0]
@@ -379,9 +398,11 @@ class fileHandling:
 
             return "Text has been written " + "by User-"+current_thread().name+"\n"
         except:
-            pass
+            return " "
+        self.test_func()
 
     def write_at_OVERWRITE(self, fname, write_at, text):
+        
         try:
 
             self.file = open("sample.dat", "w+")
@@ -396,8 +417,10 @@ class fileHandling:
             return "Text has been written " + "by User-"+current_thread().name+"\n"
         except:
             return " "
+        self.test_func()
 
     def write_at_noOVERWRITE(self, fname, write_at, text):
+        
         try:
 
             self.file = open("sample.dat", "w+")
@@ -412,6 +435,7 @@ class fileHandling:
             return "Text has been written " + "by User-"+current_thread().name+"\n"
         except:
             return " "
+        self.test_func()
 
 #write to file function needs attention
     def Write_to_File_over(self, *args):
@@ -426,16 +450,20 @@ class fileHandling:
             return_var = self.write_at_OVERWRITE(fname, int(write_at), text)
         else:
             return_var = self.write_at_noOVERWRITE(fname, int(write_at), text)
+        return return_var
 
     def Read_From_File(self, *args):
+        
         args = list(args)
         fname = args[0]
+        self.test_func()
         t = self.llist.read_file(fname)
         return t
 
     #Write in End
 
     def appendFile(self, *args):
+        
         try:
             args = list(args)
             fname = args[0]
@@ -451,9 +479,11 @@ class fileHandling:
 
             return "Text Has been Appended " + "by User-"+current_thread().name+"\n"
         except:
-            pass
+            return " "
+        self.test_func()
 
     def Move_within_file(self, *args):
+        
         try:
             args = list(args)
             fname = args[0]
@@ -473,9 +503,11 @@ class fileHandling:
 
             return "Text Has been Moved "+"by User-"+current_thread().name+"\n"
         except:
-            pass
+            return " "
+        self.test_func()
 
     def read_from_file_at(self, *args):
+        
         try:
             args = list(args)
             fname = args[0]
@@ -498,9 +530,11 @@ class fileHandling:
 
                 return " " 
         except:
-            pass
+            return " "
+        self.test_func()
 
     def truncate(self, *args):
+        
         v = self.file
         name = v.name
         args = list(args)
@@ -525,8 +559,10 @@ class fileHandling:
             self.file.close()
 
             return "File has been Truncated " + "by User-"+current_thread().name+"\n"
+        self.test_func()
 
     def show_memory_map(self):
+        self.test_func()
         mem_dat = self.llist.memory_map()
         return mem_dat
 
@@ -534,6 +570,12 @@ class fileHandling:
         #self.file.close()
         return " "
 
+    def test_func(self):
+        self.file = open("sample.dat", 'r')
+        f_d = self.file.read()
+        self.file.close()
+        self.llist.clear()
+        self.llist.get_data(f_d)
 
 class threading_class:
     def __init__(self, thread_name_obj,connection_to_client):
@@ -552,25 +594,24 @@ class threading_class:
         self.t.join()
 
     def read_input(self, thread_name):
-        print("hmmmm")
         data = "some"
         ex_test = "MHA_ARA"
         ex_test = ex_test.encode('utf-8')
         while data:
-            print ("ok before")
             data = self.ctc.recv(204800)
-            print ("after")
             if data == ex_test:
                 break
             data = data.decode('utf-8')
             list_data = data.split("#")
-
+            
             data_to_send = self.execute_program(list_data)
-            #self.dat_file_sync()
 
             self.ctc.send(data_to_send.encode('utf-8'))
-
+        
+        self.ctc.close()
         self.file_hand.system_exit()
+        
+
 
 
     def execute_program(self, data_list):
@@ -592,107 +633,35 @@ class threading_class:
         return_string = getattr(self.file_hand, name)(*list_ge)
         return return_string
 
-    def dat_file_sync(self):
-        p = ""  # variable for dat file exclusive
-        ex_p = ""
-        files_lists_data = []
-        t_f_data = ""  # just a useless variable
-        updated_file_lists_data_final = []
-        updated_file_lists_data_1_0_inner = []
-        set_of_data = []
-        updated_file_lists_data_1_0_outer = []
-        try:
-            self.file = open("sample.dat", "r+")
-            p = self.file.read()
-            self.file.close()
-        except:
-            pass
-
-        self.file_hand.llist.get_data(p)
-        inp_file = open("sample.dat", "r+")
-        data = inp_file.read()
-        files_lists_data.append(data)
-        t_f_data = t_f_data + data
-        inp_file.close()
-
-        for k in range(len(files_lists_data)):
-            ex_list = []
-            for j in files_lists_data[k].splitlines():
-
-                updated_file_lists_data_1_0_inner.append(j)
-                ex_list.append(j)
-            updated_file_lists_data_1_0_outer.append(
-                updated_file_lists_data_1_0_inner)
-
-        seen = set()
-        set_of_data = [x for x in updated_file_lists_data_1_0_inner if not (
-            x in seen or seen.add(x))]
-
-        ex_text = []
-        for i in range(len(set_of_data)):
-            ex_ = set_of_data[i].split("#")
-            ex_text.append(ex_[1])  
-
-        seen = set()
-        ex_set_file_name = [x for x in ex_text if not (
-            x in seen or seen.add(x))]
-
-        for i in range(len(ex_set_file_name)):
-            tes = ""
-            for j in range(len(set_of_data)):
-                ex_ = set_of_data[j].split('#')
-                if ex_set_file_name[i] == ex_[1]:
-                    tes = tes + ex_[0]
-            tes = tes + "#" + ex_set_file_name[i]
-            updated_file_lists_data_final.append(tes)
-
-        for k in range(len(updated_file_lists_data_final)):
-            in_p = updated_file_lists_data_final[k]+"\n"
-            ex_p = ex_p + in_p
-
-        dat_struc = LinkedList()
-        dat_struc.get_data(ex_p)
-        final_updated_data = dat_struc.printList()
-        dat_file = open("sample.dat", "w+")
-        dat_file.write(final_updated_data)
-        dat_file.close()
-        return dat_struc
+        
 
 
 class socket_class:
     def __init__(self):
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server.bind(('',95))
-        #self.server.setblocking(1)
         self.t_l = []
+        self.server.settimeout(120)
 
     def start_srvice(self):
         self.server.listen(10)
+        ex_test = "MHA_ARA"
+        ex_test = ex_test.encode('utf-8')
         while True:
-            print("sai")
-            conn, addr = self.server.accept()
-            user_name = conn.recv(204800).decode('utf-8')
-            print("after recv")
-            obj = threading_class(user_name,conn)
-            self.t_l.append(obj)
-            obj.thread_start()
-            print("after start")
-        
+            try:
+                conn, addr = self.server.accept()
+                user_name = conn.recv(204800)
+                obj = threading_class(user_name.decode('utf-8'), conn)
+                self.t_l.append(obj)
+                obj.thread_start()
+                if user_name == ex_test:
+                    break
+            except:
+                break
         self.server.close()
 
 
 obj = socket_class()
 obj.start_srvice()
 
-'''
-dat_st = None
-if n == 2:
-    for i in range(int(sys.argv[1])):
-        obj = threading_class(i)
-        obj.thread_start()
-        obj.thread_join()
-        dat_st = obj.dat_file_sync()
-    dat_st.memory_map()
 
-else:
-    print("<python3> <File name> <Thread Name>", "on linux")'''
