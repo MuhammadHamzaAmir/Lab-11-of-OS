@@ -130,6 +130,8 @@ def mainMenu():
             send_data = "MHA_ARA"
             clientSocket.send(send_data.encode('utf-8'))
             time.sleep(delay_t+1)
+            output = clientSocket.recv(2048000).decode('utf-8')
+            print(output)
             clientSocket.send(send_data.encode('utf-8'))
             break
         elif choice != "":

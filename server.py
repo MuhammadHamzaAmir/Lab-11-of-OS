@@ -600,6 +600,7 @@ class threading_class:
         while data:
             data = self.ctc.recv(204800)
             if data == ex_test:
+                self.ctc.send('HASTA LA VISTA BABY!'.encode('utf-8'))
                 break
             data = data.decode('utf-8')
             list_data = data.split("#")
@@ -641,7 +642,7 @@ class socket_class:
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server.bind(('',95))
         self.t_l = []
-        self.server.settimeout(120)
+        #self.server.settimeout(120)
 
     def start_srvice(self):
         self.server.listen(10)
